@@ -35,3 +35,9 @@ $ g++ -Wall -std=c++11 -o main.o DeadlockDetector.cpp main.cpp
 ```
 Usage: ./main.o <input_file>
 ```
+
+**Requirements**
+- gcc
+
+
+[![Contact me on Codementor](https://www.codementor.io/m-badges/sandesh87/im-a-cm-b.svg)](https://www.codementor.io/@sandesh87?refer=badge)
