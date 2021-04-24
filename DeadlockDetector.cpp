@@ -31,21 +31,21 @@ DeadlockDetector::DeadlockDetector(string filename)
     getline(infile, line);
     ss.str(line); // give line to ss
     ss.seekg(0);  // set ss to begining of line
-    for (int i = 0; i < this->numResType; i++)
+    for (unsigned i = 0; i < this->numResType; i++)
     {
         ss >> num;
         this->E_exist.push_back(num);
     }
 
     // read allocation matrix C
-    for (int i = 0; i < this->numProc; i++)
+    for (unsigned i = 0; i < this->numProc; i++)
     {
         getline(infile, line);
         ss.str(line);
         ss.seekg(0);
         vector<int> procAlloc;
 
-        for (int j = 0; j < this->numResType; j++)
+        for (unsigned j = 0; j < this->numResType; j++)
         {
             ss >> num;
             procAlloc.push_back(num);
@@ -55,14 +55,14 @@ DeadlockDetector::DeadlockDetector(string filename)
     }
 
     // read request matrix R
-    for (int i = 0; i < this->numProc; i++)
+    for (unsigned i = 0; i < this->numProc; i++)
     {
         getline(infile, line);
         ss.str(line);
         ss.seekg(0);
         vector<int> procReq;
 
-        for (int j = 0; j < this->numResType; j++)
+        for (unsigned j = 0; j < this->numResType; j++)
         {
             ss >> num;
             procReq.push_back(num);
@@ -73,13 +73,13 @@ DeadlockDetector::DeadlockDetector(string filename)
 
     // initialise remaining members
     // available vector
-    for (int i = 0; i < this->numResType; i++)
+    for (unsigned i = 0; i < this->numResType; i++)
     {
         this->A_work.push_back(0);
     }
 
     // finish vector
-    for (int i = 0; i < this->numProc; i++)
+    for (unsigned i = 0; i < this->numProc; i++)
     {
         this->finish.push_back(false);
     }
@@ -119,8 +119,8 @@ void DeadlockDetector::run()
     cout << "Available Resource Vector\n";
     printVector(this->A_work);
 
-    int idx = 0;      // the current process number
-    int idxCount = 0; // # of processes that can't execute
+    unsigned idx = 0;      // the current process number
+    unsigned idxCount = 0; // # of processes that can't execute
 
     // loop until all processes are finished
     while (!this->isDone()) {
@@ -130,7 +130,7 @@ void DeadlockDetector::run()
             procFoundFlag = true;
             idxCount = 0;
             // simulate execution of the process
-            for (int i = 0; i < this->numResType; i++)
+            for (unsigned i = 0; i < this->numResType; i++)
             {
                 // allocated resources are freed
                 this->C_alloc[idx][i] = 0;
@@ -166,7 +166,7 @@ void DeadlockDetector::run()
         // system is in deadlock
         cout << "\nSystem is deadlocked\n";
         cout << "Deadlocked processes: ";
-        for (int i = 0; i < this->numProc; i++)
+        for (unsigned i = 0; i < this->numProc; i++)
         {
             if (!this->finish[i]) {
                 cout << i << ' ';
@@ -190,10 +190,10 @@ void DeadlockDetector::updateAvailableResources()
     // store column-wise sum of C_alloc
     vector<int> colSum;
 
-    for (int col = 0; col < this->numResType; col++)
+    for (unsigned col = 0; col < this->numResType; col++)
     {
         int sum = 0;
-        for (int row = 0; row < this->numProc; row++)
+        for (unsigned row = 0; row < this->numProc; row++)
         {
             sum += this->C_alloc[row][col];
         }
@@ -201,7 +201,7 @@ void DeadlockDetector::updateAvailableResources()
     }
 
     // update currently available resources
-    for (int i = 0; i < this->numResType; i++)
+    for (unsigned i = 0; i < this->numResType; i++)
     {
         this->A_work[i] = this->E_exist[i] - colSum[i];
     }
@@ -212,7 +212,7 @@ void DeadlockDetector::updateAvailableResources()
  */
 bool DeadlockDetector::isDone()
 {
-    for (int i = 0; i < this->numProc; i++)
+    for (unsigned i = 0; i < this->numProc; i++)
     {
         if (!this->finish[i]) {
             return false;
@@ -230,7 +230,7 @@ bool DeadlockDetector::enoughResourcesAvailable(int idx)
 {
     vector<int> req_need = this->R_request_need[idx];
 
-    for (int i = 0; i < this->numResType; i++)
+    for (unsigned i = 0; i < this->numResType; i++)
     {
         if (req_need[i] > this->A_work[i]) {
             return false;
@@ -245,7 +245,7 @@ bool DeadlockDetector::enoughResourcesAvailable(int idx)
  */
 void DeadlockDetector::printVector(std::vector<int> v)
 {
-    for (int i = 0; i < v.size(); i++)
+    for (unsigned i = 0; i < v.size(); i++)
     {
         cout << v[i] << ' ';
     }
@@ -257,11 +257,11 @@ void DeadlockDetector::printVector(std::vector<int> v)
  */
 void DeadlockDetector::printMatrix(vector<vector<int>> v)
 {
-    for (int i = 0; i < v.size(); i++)
+    for (unsigned i = 0; i < v.size(); i++)
     {
         vector<int> row = v[i];
 
-        for (int j = 0; j < row.size(); j++)
+        for (unsigned j = 0; j < row.size(); j++)
         {
             cout << row[j] << ' ';
         }
