@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <queue>
 
 class DeadlockDetector
 {
@@ -14,6 +15,7 @@ private:
     std::vector<std::vector<int>> R_request_need; // the request matrix R
     std::vector<int> A_work;  // the available resources matrix A
     std::vector<bool> finish; // the finish vector
+    std::queue<int> sequence; // safe sequence
     bool init; // set to true if constructor reads the input file, false otherwise
 
     void printVector(std::vector<int> v);
@@ -21,6 +23,7 @@ private:
     void updateAvailableResources();
     bool isDone();
     bool enoughResourcesAvailable(int idx);
+    void printSafeSequence();
 
 public:
     DeadlockDetector(std::string filename);

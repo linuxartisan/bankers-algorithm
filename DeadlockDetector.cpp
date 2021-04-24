@@ -142,6 +142,7 @@ void DeadlockDetector::run()
             // mark process
             this->finish[idx] = true;
             cout << "\nProcess " << idx << " marked\n";
+            sequence.push(idx);
 
             cout << "Available Resource Vector\n";
             printVector(this->A_work);
@@ -175,6 +176,8 @@ void DeadlockDetector::run()
     } else {
         // system is not in deadlock
         cout << "\nSystem is in safe state\n";
+        cout << "The safe sequence is:\n";
+        this->printSafeSequence();
     }
 }
 
@@ -264,4 +267,16 @@ void DeadlockDetector::printMatrix(vector<vector<int>> v)
         }
         cout << '\n';
     }
+}
+
+/*
+ * print the safe sequence
+ */
+void DeadlockDetector::printSafeSequence()
+{
+    while (!this->sequence.empty()) {
+        cout << this->sequence.front() << " ";
+        this->sequence.pop();
+    }
+    cout << endl;
 }
